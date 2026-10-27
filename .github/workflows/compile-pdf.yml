@@ -1,0 +1,38 @@
+name: Compile Book PDF with Typst
+
+on:
+  push:
+    branches:
+      - master
+      - main
+    paths:
+      - '**.typ'
+      - 'images/**'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Typst
+        uses: typst-community/setup-typst@v3
+
+      - name: Download Vazirmatn Font
+        run: |
+          mkdir -p ~/.local/share/fonts
+          wget -q https://github.com/rastikerdar/vazirmatn/releases/download/v33.003/vazirmatn-v33.003.zip -O /tmp/vazirmatn.zip
+          unzip -q -o /tmp/vazirmatn.zip -d ~/.local/share/fonts/
+          fc-cache -f -v
+
+      - name: Compile PDF
+        run: |
+          typst compile book.typ output.pdf
+
+      - name: Upload PDF Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: compiled-book-pdf
+          path: output.pdf

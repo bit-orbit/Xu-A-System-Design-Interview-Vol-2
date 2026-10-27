@@ -1,0 +1,17 @@
+# Typst build outputs
+*.pdf
+!*Persian.pdf
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editors
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Node / Scratch
+node_modules/
+scratch/
